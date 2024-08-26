@@ -1,25 +1,35 @@
+<!-- create-book.component.html -->
 <div class="container">
-    <h1>Create Book</h1>
-    <form>
-      <div class="mb-3">
-        <label for="bookName" class="form-label">Book Name</label>
-        <input type="text" class="form-control" id="bookName" placeholder="Enter book name">
+  <h1>Create Book</h1>
+  <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="bookName" class="form-label">Book Name</label>
+      <input type="text" class="form-control" id="bookName" formControlName="name" placeholder="Enter book name" />
+      <div *ngIf="bookForm.get('name')?.invalid && bookForm.get('name')?.touched" class="text-danger">
+        Book Name is required.
       </div>
-      <div class="mb-3">
-        <label for="bookType" class="form-label">Book Type</label>
-        <input type="text" class="form-control" id="bookType" placeholder="Enter book type">
+    </div>
+    <div class="mb-3">
+      <label for="bookType" class="form-label">Book Type</label>
+      <input type="text" class="form-control" id="bookType" formControlName="type" placeholder="Enter book type" />
+      <div *ngIf="bookForm.get('type')?.invalid && bookForm.get('type')?.touched" class="text-danger">
+        Book Type is required.
       </div>
-      <div class="mb-3">
-        <label for="bookAuthor" class="form-label">Author</label>
-        <input type="text" class="form-control" id="bookAuthor" placeholder="Enter author name">
+    </div>
+    <div class="mb-3">
+      <label for="bookAuthor" class="form-label">Author</label>
+      <input type="text" class="form-control" id="bookAuthor" formControlName="author" placeholder="Enter author name" />
+      <div *ngIf="bookForm.get('author')?.invalid && bookForm.get('author')?.touched" class="text-danger">
+        Author is required.
       </div>
-      <div class="form-check mb-3">
-        <input type="checkbox" class="form-check-input" id="bookLocked">
-        <label class="form-check-label" for="bookLocked">Locked</label>
-      </div>
-      <div class="d-flex justify-content-end">
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <a class="btn btn-light ms-2" routerLink="/books"><i class="bi bi-arrow-left"></i>Back</a>
-      </div>
-    </form>
-  </div>
+    </div>
+    <div class="form-check mb-3">
+      <input type="checkbox" class="form-check-input" id="bookLocked" formControlName="locked" />
+      <label class="form-check-label" for="bookLocked">Locked</label>
+    </div>
+    <div class="d-flex justify-content-end">
+      <button type="submit" class="btn btn-primary" [disabled]="bookForm.invalid">Save</button>
+      <a class="btn btn-light ms-2" routerLink="/books"><i class="bi bi-arrow-left"></i> Back</a>
+    </div>
+  </form>
+</div>

@@ -1,12 +1,12 @@
-export interface book {
-  id: number;
-  name: string;
-  type: string;
-  author: string;
-  locked: boolean;
+export class BookDto {
+  id!: number;
+  name!: string;
+  type!: string;
+  author!: string;
+  locked!: boolean;
 }
 
-export const ListBooks: book[] = [
+export const ListBooks: BookDto[] = [
   {
     id: 1,
     name: 'Book abc',
@@ -31,7 +31,7 @@ export const ListBooks: book[] = [
   {
     id: 4,
     name: 'Math Book',
-    type: 'Math',
+    type: 'Programming',
     author: 'Teacher',
     locked: false,
   },

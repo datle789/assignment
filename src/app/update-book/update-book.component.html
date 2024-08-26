@@ -1,25 +1,73 @@
 <div class="container mt-4">
     <h2>Update Book</h2>
-    <form>
+    <form (ngSubmit)="onSubmit()" #bookForm="ngForm">
       <div class="mb-3">
         <label for="bookName" class="form-label">Book Name</label>
-        <input type="text" class="form-control" id="bookName"  name="name" required>
+        <input
+          type="text"
+          class="form-control"
+          id="bookName"
+          name="name"
+          [(ngModel)]="book.name"
+          required
+          #name="ngModel"
+        >
+        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback">
+          Book name is required.
+        </div>
       </div>
       <div class="mb-3">
         <label for="bookType" class="form-label">Book Type</label>
-        <input type="text" class="form-control" id="bookType"  name="type" required>
+        <select
+          id="bookType"
+          class="form-select"
+          name="type"
+          [(ngModel)]="book.type"
+          required
+          #type="ngModel"
+        >
+          <option *ngFor="let type of bookTypes" [value]="type.code">
+            {{ type.name }}
+          </option>
+        </select>
+        <div *ngIf="type.invalid && (type.dirty || type.touched)" class="invalid-feedback">
+          Book type is required.
+        </div>
       </div>
       <div class="mb-3">
         <label for="bookAuthor" class="form-label">Author</label>
-        <input type="text" class="form-control" id="bookAuthor" name="author" required>
+        <input
+          type="text"
+          class="form-control"
+          id="bookAuthor"
+          name="author"
+          [(ngModel)]="book.author"
+          required
+          #author="ngModel"
+        >
+        <div *ngIf="author.invalid && (author.dirty || author.touched)" class="invalid-feedback">
+          Author is required.
+        </div>
       </div>
       <div class="form-check mb-3">
-        <input type="checkbox" class="form-check-input" id="bookLocked"  name="locked">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          id="bookLocked"
+          name="locked"
+          [(ngModel)]="book.locked"
+        >
         <label class="form-check-label" for="bookLocked">Locked</label>
       </div>
       <div class="d-flex justify-content-end">
-        <button type="submit" class="btn btn-primary">Update</button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="bookForm.invalid"
+        >
+          Save
+        </button>
         <a class="btn btn-secondary ms-2" [routerLink]="['/books']">Cancel</a>
       </div>
     </form>
-  </div>
+</div>

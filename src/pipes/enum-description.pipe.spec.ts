@@ -1,4 +1,4 @@
-import { EnumDescriptionPipe } from './enum-description.pipe';
+import { EnumDescriptionPipe } from '../pipes/enum-description.pipe';
 
 describe('EnumDescriptionPipe', () => {
   it('create an instance', () => {

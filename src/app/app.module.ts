@@ -7,7 +7,11 @@ import { BookListComponent } from './book-list/book-list.component';
 import { CreateBookComponent } from './create-book/create-book.component';
 import { UpdateBookComponent } from './update-book/update-book.component';
 import { ViewBookComponent } from './view-book/view-book.component';
-import { EnumDescriptionPipe } from './enum-description.pipe';
+import { EnumDescriptionPipe } from '../pipes/enum-description.pipe';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ButtonModule } from 'primeng/button';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -16,13 +20,17 @@ import { EnumDescriptionPipe } from './enum-description.pipe';
     CreateBookComponent,
     UpdateBookComponent,
     ViewBookComponent,
-    EnumDescriptionPipe
+    EnumDescriptionPipe,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    BrowserAnimationsModule,
+    ButtonModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
