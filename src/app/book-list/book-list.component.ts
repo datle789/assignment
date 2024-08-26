@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { book, ListBooks } from 'src/models/book';
 
 @Component({
   selector: 'app-book-list',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./book-list.component.css']
 })
 export class BookListComponent implements OnInit {
+
+  books:book[] = ListBooks;
 
   constructor() { }
 
