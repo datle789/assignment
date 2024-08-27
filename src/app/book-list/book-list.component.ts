@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Route, Router } from '@angular/router';
 import { BookTypeEnum } from 'src/enums/book-type.enum';
-import { BookDto, ListBooks } from 'src/models/books/book.dto';
+import { BookDto } from 'src/models/books/book.dto';
 import { BookService } from 'src/services/books/book.services';
 
 @Component({
@@ -12,13 +12,29 @@ import { BookService } from 'src/services/books/book.services';
 export class BookListComponent implements OnInit {
   books: BookDto[] = [];
   bookTypeEnum = BookTypeEnum;
-  constructor(private bookService: BookService,private router:Router) {}
+  constructor(private bookService: BookService, private router: Router) {}
 
   ngOnInit(): void {
+    this.bookService.getBooks().subscribe((data: BookDto[]) => {
+      this.books = data;
+    });
     this.loadBooks();
   }
 
   loadBooks(): void {
-    this.books = [...ListBooks]; // Load the mock data
+    this.bookService.getBooks().subscribe((data: BookDto[]) => {
+      this.books = data;
+    });
+  }
+
+  deleteEmployee(id: number): void {
+    this.bookService.deleteBook(id).subscribe({
+      next: (response) => {
+        this.books = this.books.filter((e) => e.id != id);
+      },
+      error: (err) => {
+        console.log('error deleting employee', err);
+      },
+    });
   }
 }

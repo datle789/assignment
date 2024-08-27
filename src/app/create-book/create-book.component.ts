@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BookDto, ListBooks } from 'src/models/books/book.dto';
-
-
-let idCounter = ListBooks.length;
+import { ActivatedRoute, Router } from '@angular/router';
+import { BookTypeEnum } from 'src/enums/book-type.enum';
+import { BookDto } from 'src/models/books/book.dto';
+import { BookService } from 'src/services/books/book.services';
 
 @Component({
   selector: 'app-create-book',
@@ -11,18 +11,18 @@ let idCounter = ListBooks.length;
   styleUrls: ['./create-book.component.css'],
 })
 export class CreateBookComponent implements OnInit {
-  bookForm: FormGroup;
+  bookForm!: FormGroup;
+  bookTypes = BookTypeEnum;
 
-  // book: BookDto = {
-  //   id: 0,
-  //   name: '',
-  //   type: '',
-  //   author: '',
-  //   locked: false,
-  // };
+  constructor(
+    private bookService: BookService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder
+  ) {}
 
-  constructor(private fb: FormBuilder) {
-    this.bookForm = this.fb.group({
+  ngOnInit(): void {
+    this.bookForm = this.formBuilder.group({
       name: ['', Validators.required],
       type: ['', Validators.required],
       author: ['', Validators.required],
@@ -30,17 +30,17 @@ export class CreateBookComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
-
   onSubmit(): void {
     if (this.bookForm.valid) {
-      const newBook: BookDto = {
-        id: ++idCounter,
-        ...this.bookForm.value,
-      };
-      alert(`Book Created: ${JSON.stringify(newBook)}`);
-      console.log('Book Created:', newBook);
+      const newBook: BookDto = this.bookForm.value;
+      this.bookService.createBook(newBook).subscribe({
+        next: () => {
+          this.router.navigate(['/books']);
+        },
+        error: (err) => {
+          console.error('Error creating book:', err);
+        },
+      });
     }
   }
-
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BookDto, ListBooks } from 'src/models/books/book.dto';
+import { BookDto } from 'src/models/books/book.dto';
+import { BookService } from 'src/services/books/book.services';
 
 @Component({
   selector: 'app-view-book',
@@ -16,7 +17,7 @@ export class ViewBookComponent implements OnInit {
     locked: true,
   };
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private bookService: BookService,private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((result) => {
@@ -24,7 +25,10 @@ export class ViewBookComponent implements OnInit {
 
       if (id) {
         const bookId = Number(id);
-        this.book = ListBooks.find((b) => b.id == bookId) || this.book;
+        this.bookService.getBookById(bookId).subscribe({
+          next: (result) => (this.book = result),
+          error: (err) => console.error('error loading employee', err),
+        });
       }
     });
   }

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BookTypeEnum } from 'src/enums/book-type.enum';
-import { BookDto, ListBooks } from 'src/models/books/book.dto';
+import { BookDto } from 'src/models/books/book.dto';
+import { BookService } from 'src/services/books/book.services';
 
 @Component({
   selector: 'app-update-book',
@@ -17,24 +18,37 @@ export class UpdateBookComponent implements OnInit {
     author: '',
     locked: false,
   };
-  constructor(private route: ActivatedRoute) {}
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private bookService: BookService
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((result) => {
       const id = result.get('id');
-
       if (id) {
         const bookId = Number(id);
-        this.book  = ListBooks.find((b) => b.id == bookId) || this.book;
+        this.bookService.getBookById(bookId).subscribe((book) => {
+          if (book) {
+            this.book = book;
+          }
+        });
       }
     });
   }
 
   onSubmit(): void {
     if (this.book) {
-      alert(`Book Updated: ${JSON.stringify(this.book)}`);
-      // Implement logic to update the book data
-      console.log('Book Updated:', this.book);
+      this.bookService.editBook(this.book).subscribe({
+        next: () => {
+          this.router.navigate(['/books']);
+        },
+        error: (err) => {
+          console.error('Error updating book:', err);
+        },
+      });
     }
   }
 }
