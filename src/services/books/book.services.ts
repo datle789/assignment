@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BookDto } from 'src/models/books/book.dto';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BookService {
-  private apiUrl = `https://localhost:7041/api/Book`;
+  private apiUrl = `${environment.BaseUrl}/Book`;
+
   constructor(private http: HttpClient) {}
 
   getBooks(): Observable<BookDto[]> {
