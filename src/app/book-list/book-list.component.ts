@@ -27,7 +27,7 @@ export class BookListComponent implements OnInit {
     });
   }
 
-  deleteEmployee(id: number): void {
+  deleteBook(id: number): void {
     this.bookService.deleteBook(id).subscribe({
       next: (response) => {
         this.books = this.books.filter((e) => e.id != id);
