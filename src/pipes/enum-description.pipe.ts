@@ -5,9 +5,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class EnumDescriptionPipe implements PipeTransform {
   transform(
-    code: string,
+    code: string | null,
     enumList: { code: string; name: string }[]
-  ): string | undefined {
+  ): string | undefined | null {
     const matchedItem = enumList.find((item) => item.code === code);
     return matchedItem ? matchedItem.name : undefined;
   }
