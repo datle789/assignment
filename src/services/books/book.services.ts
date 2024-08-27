@@ -18,7 +18,7 @@ export class BookService {
     return this.http.get<BookDto>(`${this.apiUrl}/${id}`);
   }
 
-  createEmployee(bookDto: BookDto): Observable<BookDto> {
+  createBook(bookDto: BookDto): Observable<BookDto> {
     return this.http.post<BookDto>(this.apiUrl, bookDto);
   }
 
