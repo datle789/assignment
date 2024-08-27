@@ -26,7 +26,7 @@ export class BookService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  editEmployee(bookDto: BookDto): Observable<BookDto> {
+  editBook(bookDto: BookDto): Observable<BookDto> {
     return this.http.put<BookDto>(`${this.apiUrl}/${bookDto.id}`, bookDto);
   }
 }
