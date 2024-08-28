@@ -41,6 +41,8 @@ export class CreateBookComponent implements OnInit {
           console.error('Error creating book:', err);
         },
       });
+    } else {
+      console.warn('Form is invalid');
     }
   }
 }

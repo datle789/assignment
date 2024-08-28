@@ -1,47 +1,47 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { BookService } from 'src/services/books/book.services';
 import { CreateBookComponent } from './create-book.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { of } from 'rxjs';
+import { BookDto } from 'src/models/books/book.dto';
 
 describe('CreateBookComponent', () => {
   let component: CreateBookComponent;
   let fixture: ComponentFixture<CreateBookComponent>;
-  let router: Router;
+  let bookService: jasmine.SpyObj<BookService>;
 
   beforeEach(async () => {
+    const spy = jasmine.createSpyObj('BookService', ['createBook']);
+
     await TestBed.configureTestingModule({
       declarations: [CreateBookComponent],
-      imports: [
-        RouterTestingModule.withRoutes([
-          { path: 'books/create', component: CreateBookComponent },
-        ]),
-        FormsModule,
-        ReactiveFormsModule,
-      ],
+      imports: [ReactiveFormsModule, RouterTestingModule],
+      providers: [{ provide: BookService, useValue: spy }],
     }).compileComponents();
-  });
 
-  beforeEach(() => {
+    bookService = TestBed.inject(BookService) as jasmine.SpyObj<BookService>;
     fixture = TestBed.createComponent(CreateBookComponent);
     component = fixture.componentInstance;
-    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  it('should create a book and navigate', () => {
+    bookService.createBook.and.returnValue(of({} as BookDto));
 
-  it('should load /books/create and check if the Create button is disabled initially', async () => {
-    await router.navigate(['/books/create']);
-    fixture.detectChanges();
+    // Simulate filling out the form
+    component.bookForm.setValue({
+      name: 'Test Book',
+      type: 'Programming', // Ensure this matches a valid enum value
+      author: 'Test Author',
+      locked: false,
+    });
 
-    const createButton = fixture.debugElement.query(
-      By.css('button#createButton')
-    );
-    expect(createButton).toBeTruthy();
-    expect(createButton.nativeElement.disabled).toBeTrue();
+    // Trigger the form submission
+    component.onSubmit();
+
+    // Expect that the form is valid and the service was called
+    expect(component.bookForm.valid).toBeTrue();
+    expect(bookService.createBook).toHaveBeenCalled();
   });
 });

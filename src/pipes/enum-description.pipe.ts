@@ -9,6 +9,6 @@ export class EnumDescriptionPipe implements PipeTransform {
     enumList: { code: string; name: string }[]
   ): string | undefined | null {
     const matchedItem = enumList.find((item) => item.code === code);
-    return matchedItem ? matchedItem.name : undefined;
+    return matchedItem ? matchedItem.name : null;
   }
 }
